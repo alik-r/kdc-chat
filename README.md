@@ -60,4 +60,3 @@ $ python manage.py runserver
 
 ## Showcase
 ![](./readme_assets/front.png)
-A
