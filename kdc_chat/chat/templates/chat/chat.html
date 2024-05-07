@@ -9,18 +9,6 @@
 
     <div class="lg:w-2/4 mx-4 lg:mx-auto p-4 bg-white rounded-xl">
         <div class="chat-messages space-y-3" id="chat-messages">
-            <div class="p-4 bg-gray-200 rounded-xl">
-                <p class="font-semibold">Username</p>
-                <p>Lorem ipsum dolor sit amet</p>
-            </div>
-            <div class="p-4 bg-gray-200 rounded-xl">
-                <p class="font-semibold">Username</p>
-                <p>Lorem ipsum dolor sit amet</p>
-            </div>
-            <div class="p-4 bg-gray-200 rounded-xl">
-                <p class="font-semibold">Username</p>
-                <p>Lorem ipsum dolor sit amet</p>
-            </div>
         </div>
     </div>
 
@@ -35,9 +23,16 @@
 
 {% block scripts %}
 {{ chat.slug|json_script:"json-chatName" }}
+{{ request.user.username|json_script:"json-username" }}
 
     <script>
         const chatName = JSON.parse(document.getElementById("json-chatName").textContent);
+        const username = JSON.parse(document.getElementById("json-username").textContent);
+        const chatMessages = document.querySelector("#chat-messages");
+        const messageInput = document.querySelector("#message-input");
+        const messageSubmitBtn = document.querySelector("#message-submit-btn");
+        const messageClasses = ["p-4", "bg-gray-200", "rounded-xl"];
+
         const socket = new WebSocket(
             "ws://"
             + window.location.host
@@ -47,11 +42,45 @@
         );
 
         socket.onmessage = function(e) {
-            console.log(e.data);
+            const data = JSON.parse(e.data);
+            if (!data.message) {
+                console.error("Empty message received");
+                return;
+            }
+
+            const messageElement = document.createElement("div");
+            messageElement.classList.add(...messageClasses)
+
+            const usernameElement = document.createElement("p");
+            usernameElement.classList.add("font-semibold");
+            usernameElement.textContent = data.username;
+
+            const messageContentElement = document.createElement("p");
+            messageContentElement.textContent = data.message;
+
+            messageElement.appendChild(usernameElement);
+            messageElement.appendChild(messageContentElement);
+
+            chatMessages.appendChild(messageElement);
         };
 
         socket.onclose = function(e) {
-            console.error("Chat socket closed unexpectedly");
+            console.warn("Socket closed: ", e);
         };
+
+        messageSubmitBtn.addEventListener("click", function(e) {
+            e.preventDefault();
+            const message = messageInput.value;
+
+            socket.send(JSON.stringify({
+                "message": message,
+                "username": username,
+                "chat_name": chatName
+            }));
+
+            messageInput.value = "";
+
+            return false;
+        });
     </script>
 {% endblock %}
