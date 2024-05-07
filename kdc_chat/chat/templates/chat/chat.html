@@ -8,7 +8,13 @@
     </div>
 
     <div class="lg:w-2/4 mx-4 lg:mx-auto p-4 bg-white rounded-xl">
-        <div class="chat-messages space-y-3" id="chat-messages">
+        <div class="chat-messages space-y-3" id="chat-messages" style="height: 400px; overflow-y: auto;">
+            {% for message in messages %}
+                <div class="p-4 bg-gray-200 rounded-xl">
+                    <p class="font-semibold">{{ message.user.username }}</p>
+                    <p>{{ message.content }}</p>
+                </div>
+            {% endfor %}
         </div>
     </div>
 
@@ -32,6 +38,12 @@
         const messageInput = document.querySelector("#message-input");
         const messageSubmitBtn = document.querySelector("#message-submit-btn");
         const messageClasses = ["p-4", "bg-gray-200", "rounded-xl"];
+
+        const scrollToBottom = () => {
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        };
+
+        scrollToBottom();
 
         const socket = new WebSocket(
             "ws://"
@@ -62,6 +74,7 @@
             messageElement.appendChild(messageContentElement);
 
             chatMessages.appendChild(messageElement);
+            scrollToBottom();
         };
 
         socket.onclose = function(e) {
@@ -79,6 +92,7 @@
             }));
 
             messageInput.value = "";
+            scrollToBottom();
 
             return false;
         });
