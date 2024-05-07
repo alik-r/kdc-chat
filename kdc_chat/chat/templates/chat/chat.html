@@ -32,3 +32,26 @@
         </form>
     </div>
 {% endblock %}
+
+{% block scripts %}
+{{ chat.slug|json_script:"json-chatName" }}
+
+    <script>
+        const chatName = JSON.parse(document.getElementById("json-chatName").textContent);
+        const socket = new WebSocket(
+            "ws://"
+            + window.location.host
+            + "/ws/"
+            + chatName
+            + "/"
+        );
+
+        socket.onmessage = function(e) {
+            console.log(e.data);
+        };
+
+        socket.onclose = function(e) {
+            console.error("Chat socket closed unexpectedly");
+        };
+    </script>
+{% endblock %}

@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
+    "daphne",
     "django.contrib.staticfiles",
     "channels",
     "core",
@@ -75,6 +76,15 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "kdc_chat.wsgi.application"
+ASGI_APPLICATION = "kdc_chat.asgi.application"
+
+CHANNEL_LAYERS = {
+    "default": {
+        # TODO: Use Redis in production
+        "BACKEND": "channels.layers.InMemoryChannelLayer"
+    }
+
+}
 
 
 # Database
