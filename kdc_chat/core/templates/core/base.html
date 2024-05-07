@@ -6,6 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}{% endblock %} | KDC Chat</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: "Nunito", sans-serif;
+            height: 100vh;
+        }
+    </style>
 </head>
 
 <body class="bg-teal-600">
@@ -16,6 +22,7 @@
 
         <div class="flex items-center space-x-4">
             {% if request.user.is_authenticated %}
+            <p class="text-white">Hello, {{ request.user.username }}</p>
             <a href="/chats/" class="text-white hover:text-gray-200">Chats</a>
             <form method="post" action="{% url 'logout' %}">
                 {% csrf_token %}

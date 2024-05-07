@@ -27,6 +27,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+BASE_URL = "http://localhost:8000"
+
 LOGOUT_REDIRECT_URL = "/"
 LOGIN_REDIRECT_URL = "/chats/"
 LOGIN_URL = "/login/"
@@ -44,7 +46,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "channels",
     "core",
-    "chat"
+    "chat",
+    "kdc",
 ]
 
 MIDDLEWARE = [
@@ -83,9 +86,7 @@ CHANNEL_LAYERS = {
         # TODO: Use Redis in production
         "BACKEND": "channels.layers.InMemoryChannelLayer"
     }
-
 }
-
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
