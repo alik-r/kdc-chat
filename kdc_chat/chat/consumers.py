@@ -3,11 +3,12 @@ import json
 from channels.generic.websocket import AsyncWebsocketConsumer
 from asgiref.sync import sync_to_async
 
-from kdc.models import CaesarConnection
+from kdc.models import SessionKey
 from kdc.crypto_utils import Caesar
 
 from .models import Message, Chat
 from django.contrib.auth.models import User
+from django.core.cache import cache
 
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
@@ -60,9 +61,19 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     @sync_to_async
     def decrypt_message(self, message, username, chat_name):
-        caesar_key = CaesarConnection.objects.get(user=User.objects.get(username=username), chat=Chat.objects.get(slug=chat_name)).caesar_key
+        cache_key = f"{username}_{chat_name}_caesar_key"
+        caesar_key = cache.get_or_set(cache_key, lambda: self.retrieve_caesar_key(username, chat_name), timeout=60*60)
         decrypted_message = Caesar.decrypt(message, caesar_key)
         return decrypted_message
+
+    def retrieve_caesar_key(self, username, chat_name):
+        try:
+            user = User.objects.get(username=username)
+            chat = Chat.objects.get(slug=chat_name)
+            session_key = SessionKey.objects.filter(user=user, chat=chat).latest("created_at")
+            return session_key.key
+        except (User.DoesNotExist, Chat.DoesNotExist, SessionKey.DoesNotExist):
+            return None
 
     @sync_to_async
     def save_message(self, message, username, chat_name):
