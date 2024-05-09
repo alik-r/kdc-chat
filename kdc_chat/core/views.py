@@ -4,7 +4,9 @@ from django.shortcuts import render, redirect
 from .forms import SignupForm
 
 def home(request):
-    return render(request, "core/landing.html", {"username": request.user.username})
+    return render(request, "core/landing.html", {
+        "is_anonymous": request.user.is_anonymous,
+    })
 
 def signup(request):
     if request.method == "POST":

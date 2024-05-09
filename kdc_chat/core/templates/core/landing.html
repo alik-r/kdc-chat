@@ -3,7 +3,35 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-    <div class="p-10 lg:p-20 text-center">
-        <h1 class="text-3xl lg:text-6xl text-white">KDC Chat</h1>
-    </div>
+<div class="p-10 lg:p-20 text-center">
+    <h1 class="text-3xl lg:text-6xl text-white">KDC Chat</h1>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{{ is_anonymous|json_script:"json-is_anonymous" }}
+
+<script>
+    const is_anonymous = JSON.parse(document.getElementById("json-is_anonymous").textContent);
+
+    csrftoken = document.cookie.split("; ").find(row => row.startsWith("csrftoken=")).split("=")[1];
+    if (!is_anonymous) {
+        fetch("kdc/reset/", {
+            method: "DELETE",
+            headers: {
+                "X-CSRFToken": csrftoken,
+            }
+        })
+            .then((response) => {
+                if (response.ok) {
+                    console.log("Session key reset successful");
+                } else {
+                    console.error("Session key reset failed:", response.data);
+                }
+            })
+            .catch((error) => {
+                console.error("KDC reset failed: ", error);
+            });
+    }
+</script>
 {% endblock %}
