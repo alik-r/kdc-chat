@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 
 <head>
@@ -8,30 +9,31 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
-            font-family: "Nunito", sans-serif;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
             height: 100vh;
         }
     </style>
 </head>
 
-<body class="bg-teal-600">
-    <nav class="flex items-center justify-between px-4 py-6 bg-teal-800">
-        <div>
-            <a href="/" class="text-xl text-white">KDC Chat</a>
+<body class="bg-white-600">
+    <nav class="flex items-center justify-between px-4 py-6 bg-indigo-800">
+        <div class="bg-white px-3 py-2 rounded-xl flex items-center">
+            <img src="{% static 'images/kerberos2.png' %}" alt="Chat" class="w-10 h-10 inline">
+            <a href="/" class="text-xl font-semibold text-black">KDC Chat</a>
         </div>
 
         <div class="flex items-center space-x-4">
             {% if request.user.is_authenticated %}
-            <p class="text-white">Hello, {{ request.user.username }}</p>
-            <a href="/chats/" class="text-white hover:text-gray-200">Chats</a>
+            <p class="text-white">Hello, <span class="font-semibold">{{ request.user.username }}</span></p>
+            <a href="/chats/" class="text-white hover:text-gray-200 bg-indigo-750 rounded-xl px-5 py-3 font-semibold border-2 hover:bg-indigo-950">Chats</a>
             <form method="post" action="{% url 'logout' %}">
                 {% csrf_token %}
-                <button type="submit" class="px-5 py-3 rounded-xl text-white bg-teal-600 hover:bg-teal-700">Log out</button>
+                <button type="submit" class="px-5 py-3 rounded-xl text-white font-semibold bg-indigo-900 hover:bg-indigo-950 border-2">Log out</button>
             </form>
 
             {% else %}
             <a href="/login/" class="text-white hover:text-gray-200">Log in</a>
-            <a href="/signup/" class="px-5 py-3 rounded-xl text-white bg-teal-600 hover:bg-teal-700">Sign up</a>
+            <a href="/signup/" class="px-5 py-3 rounded-xl text-white bg-indigo-600 hover:bg-indigo-700">Sign up</a>
             {% endif %}
         </div>
     </nav>
