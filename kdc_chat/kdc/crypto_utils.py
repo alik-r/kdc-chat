@@ -1,5 +1,7 @@
+import datetime
 import random
 import ast
+import uuid
 
 class MiniRSA:
     def __init__(self, bits: int = 8):
@@ -18,6 +20,11 @@ class MiniRSA:
     def get_public_key_from_keypair_str(keypair_str: str) -> tuple[int, int]:
         keypair = ast.literal_eval(keypair_str)
         return keypair[0]
+    
+    @staticmethod
+    def get_private_key_from_keypair_str(keypair_str: str) -> tuple[int, int]:
+        keypair = ast.literal_eval(keypair_str)
+        return keypair[1]
     
     def is_prime(self, n: int) -> bool:
         if n <= 1:
@@ -80,6 +87,24 @@ class MiniRSA:
         e, n = public_key
         ciphertext = [pow(ord(char), e, n) for char in plaintext]
         return ",".join(map(str, ciphertext))
+    
+    @staticmethod
+    def decrypt_with_key(ciphertext: str, private_key: tuple[int, int]) -> str:
+        d, n = private_key
+        decrypted_message = [chr(pow(int(char), d, n)) for char in ciphertext.split(",")]
+        return "".join(decrypted_message)
+    
+    @staticmethod
+    def encrypt_with_keypair(plaintext: str | int, keypair_str: str) -> str:
+        if type(plaintext) == int:
+            plaintext = str(plaintext)
+        public_key = MiniRSA.get_public_key_from_keypair_str(keypair_str)
+        return MiniRSA.encrypt_with_key(plaintext, public_key)
+    
+    @staticmethod
+    def decrypt_with_keypair(ciphertext: str, keypair_str: str) -> str:
+        private_key = MiniRSA.get_private_key_from_keypair_str(keypair_str)
+        return MiniRSA.decrypt_with_key(ciphertext, private_key)
 
     def decrypt(self, ciphertext: str) -> str:
         d, n = self.private_key
@@ -91,11 +116,17 @@ class MiniRSA:
 
 class Caesar:
     @staticmethod
-    def generate_key():
+    def generate_key() -> int:
         return random.randint(1, 25)
 
     @staticmethod
-    def encrypt(text, key):
+    def encrypt(text: str | int, key: str | int):
+        if type(text) == int:
+            text = str(text)
+
+        if type(key) != int:
+            key = int(key)
+        
         encrypted_text = ""
         for char in text:
             if char.isalpha():
@@ -116,9 +147,17 @@ class Caesar:
         return encrypted_text
 
     @staticmethod
-    def decrypt(text, key):
+    def decrypt(text : str | int, key: str | int):
+        if type(key) != int:
+            key = int(key)
         return Caesar.encrypt(text, -key)
 
 def generate_rsa_keypair():
     rsa = MiniRSA()
     return str(rsa) 
+
+def generate_timestamp() -> int:
+    return int(datetime.datetime.now().timestamp() * 1e6)
+
+def generate_nonce() -> str:
+    return uuid.uuid4().hex
