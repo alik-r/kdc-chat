@@ -1,5 +1,7 @@
 # Key Distribution Center for Caesar cipher using RSA
-This project is a real-time chat application built with Django that includes a Key Distribution Center (KDC) for Caesar cipher using our own RSA implementation from PW8-9 (`MiniRSA`). The KDC implements Needham-Schroeder Protocol and is responsible for handling session keys. These session keys are then used to encrypt and decrypt messages for secure communication.
+![](./kdc_chat/static/images/my.png)
+
+This project is a real-time chat application built with Django that includes a Key Distribution Center (KDC) for Caesar cipher key distribution and uses our own RSA implementation from last practical work (`MiniRSA`). The KDC implements Needham-Schroeder Protocol and is responsible for handling session keys. These session keys are then used to encrypt and decrypt messages for secure communication.
 
 Project includes:
 - User registration and authentication by utilizing Django's default `User` model
@@ -15,6 +17,8 @@ The project is structured as a Django application with the following main compon
 - `chat/`: The Django app responsible for handling chat-related functionality, such as Websocket connections.
 - `core/`: The Django app responsible for handling core functionality like user registration and authentication, landing and login pages etc.
 - `kdc/`: The Django app responsible for key distribution center functionality like session key generation, deletion etc.
+
+![](./kdc_chat/static/images/kerberos.png)
 
 ## Usage
 
@@ -39,6 +43,8 @@ $ python manage.py runserver
 
 ## Needham-Schroeder Protocol Implementation in Chat
 The Needham-Schroeder protocol was implemented for secure communication between users (Alice) and chat rooms (Bob) using a Key Distribution Center (KDC).
+
+![](./kdc_chat/static/images/kdc2.png)
 
 ### Overview
 #### Authentication Initiation (Alice to Bob)
