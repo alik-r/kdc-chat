@@ -1,4 +1,6 @@
 # Key Distribution Center for Caesar cipher using RSA
+> Team: Alikamran Rzayev, Tamerlan Imanov, Elnur Hagverdiyev
+
 ![](./kdc_chat/static/images/my.png)
 
 This project is a real-time chat application built with Django that includes a Key Distribution Center (KDC) for Caesar cipher key distribution and uses our own RSA implementation from last practical work (`MiniRSA`). The KDC implements Needham-Schroeder Protocol and is responsible for handling session keys. These session keys are then used to encrypt and decrypt messages for secure communication.
