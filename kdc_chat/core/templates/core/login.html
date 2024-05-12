@@ -4,25 +4,25 @@
 
 {% block content %}
     <div class="p-10 lg:p-20 text-center">
-        <h1 class="text-3xl lg:text-6xl text-white">Log in</h1>
+        <h1 class="text-3xl lg:text-6xl text-gray-800">Log in</h1>
     </div>
 
     <form method="post" action="." class="lg:w-1/4 px-4 mx-auto">
         {% csrf_token %}
         <div class="mb-5">
-            <label for="username" class="block text-white">Username</label>
-            <input type="text" name="username" id="username" class="w-full mt-2 px-4 py-2 rounded-xl" required>
+            <label for="username" class="block text-gray-800">Username</label>
+            <input type="text" name="username" id="username" class="w-full mt-2 px-4 py-2 rounded-xl border-2" required>
         </div>
 
         <div class="mb-5">
-            <label for="password" class="block text-white">Password</label>
-            <input type="password" name="password" id="password" class="w-full mt-2 px-4 py-2 rounded-xl" required>
+            <label for="password" class="block text-gray-800">Password</label>
+            <input type="password" name="password" id="password" class="w-full mt-2 px-4 py-2 rounded-xl border-2" required>
         </div>
 
         {% if form.errors %}
             {% for field in form %}
                 {% for error in field.errors %}
-                    <div class="mb-5 p-4 rounded-xl bg-red-500 text-white">
+                    <div class="mb-5 p-4 rounded-xl bg-red-500 text-gray-800">
                         <p>
                             {{ error|escape }}
                         </p>

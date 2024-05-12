@@ -24,9 +24,10 @@ The project is structured as a Django application with the following main compon
 
 ## Usage
 
-1. Activate the virtual environment by running
+1. First create then activate virtual environment by running
 
 ```sh
+$ python3 -m venv venv
 $ source venv/bin/activate
 ```
 
@@ -41,6 +42,12 @@ $ pip install -r requirements.txt
 
 ```sh
 $ python manage.py runserver
+```
+
+5. Django Admin superuser login:
+```sh
+username: admin
+pw: Forinti=0
 ```
 
 ## Needham-Schroeder Protocol Implementation in Chat

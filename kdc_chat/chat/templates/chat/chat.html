@@ -103,7 +103,14 @@
             return false;
         }
 
+        console.log("> Sending message: ", message
+            + " to chat: " + chatName
+            + " with username: " + username
+            + " and caesar key: " + caesarKey)
+
         const encryptedMessage = caesarCipher(message, caesarKey);
+
+        console.log("> Encrypted message: ", encryptedMessage);
 
         socket.send(JSON.stringify({
             "message": encryptedMessage,

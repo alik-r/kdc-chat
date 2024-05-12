@@ -161,3 +161,6 @@ def generate_timestamp() -> int:
 
 def generate_nonce() -> str:
     return uuid.uuid4().hex
+
+def print_with_timestamp(message: str) -> None:
+    print(f"[{datetime.datetime.now()}] {message}")
