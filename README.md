@@ -1,5 +1,5 @@
 # Key Distribution Center for Caesar cipher using RSA
-> Team: Alikamran Rzayev, Tamerlan Imanov, Elnur Hagverdiyev
+### Team: Alikamran Rzayev, Tamerlan Imanov, Elnur Hagverdiyev
 
 ![](./kdc_chat/static/images/my.png)
 
